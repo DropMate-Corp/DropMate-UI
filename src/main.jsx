@@ -10,6 +10,7 @@ import {
 import App from './App.jsx'
 import ACP from './pages/ACP/index.jsx';
 import ACPOperator from './pages/ACP-Operator/index.jsx';
+import Home from './pages/Home/index.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/acp-operator",
     element: <ACPOperator />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
   }
 ]);
 
