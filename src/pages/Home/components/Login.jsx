@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Bootstrap
 import Button from 'react-bootstrap/Button';
@@ -7,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 
 
 export default function Login() {
+    const navigate = useNavigate();
 
     // Form
     const [email, setEmail] = useState('');
@@ -30,6 +32,18 @@ export default function Login() {
         console.log('Email: ', email);
         console.log('Password: ', password);
         console.log('Admin: ', admin);
+
+        // TODO: Add authentication
+
+        // Set Log in Local Storage
+        localStorage.setItem('loggedIn', true);
+
+        // Redirect to Admin if admin is true
+        if (admin) {
+            navigate('/admin');
+        } else {
+            navigate('/acp-operator');
+        }
     }
 
     return (
