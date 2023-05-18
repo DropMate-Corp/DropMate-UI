@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 
 // Components
 import ACPDetails from "./components/ACPDetails"
@@ -7,16 +8,47 @@ import ParcelsWaitingPickupTable from "./components/ParcelsWaitingPickupTable";
 
 // Data
 import { ACP as ACPData } from '../../_mocks/ACP.jsx';
-import { ParcelsWaitingDelivery } from "../../_mocks/ParcelWaitingDelivery";
-import { ParcelsWaitingPickup } from "../../_mocks/ParcelWaitingPickup";
+import { Parcels } from "../../_mocks/Parcel";
 
 export default function ACPOperator() {
+    const [parcels, setParcels] = useState([]);
+    const [parcelsWaitingDelivery, setParcelsWaitingDelivery] = useState([]);
+    const [parcelsWaitingPickup, setParcelsWaitingPickup] = useState([]);
+  
+    useEffect(() => {
+      setParcels(Parcels);
+      setParcelsWaitingDelivery(Parcels.filter((parcel) => parcel.status === 'In Transit'));
+      setParcelsWaitingPickup(Parcels.filter((parcel) => parcel.status === 'Pending'));
+    }, []);
+  
+    // Update parcel status
+    const updateParcelStatus = (parcelID, status) => {
+      const updatedParcels = parcels.map((parcel) => {
+        if (parcel.parcel_id === parcelID) {
+          // Add delivery date if parcel status changed to Pending else add pickup date
+            if (status === 'Pending') {
+                parcel.delivery_date = new Date().toString();
+            } else if (status === 'Delivered') {
+                parcel.pickup_date = new Date().toString();
+            }
+
+            parcel.status = status;
+        }
+        return parcel;
+      });
+  
+      setParcels(updatedParcels);
+      setParcelsWaitingDelivery(updatedParcels.filter((parcel) => parcel.status === 'In Transit'));
+      setParcelsWaitingPickup(updatedParcels.filter((parcel) => parcel.status === 'Pending'));
+    };
+  
     return (
-        <>
-            <BasicExample />
-            <ACPDetails acp={ACPData}/>
-            <ParcelsWaitingDeliveryTable parcels={ParcelsWaitingDelivery}/>
-            <ParcelsWaitingPickupTable parcels={ParcelsWaitingPickup}/>
-        </>
-    )
-}
+      <>
+        <BasicExample />
+        <ACPDetails acp={ACPData} />
+        <ParcelsWaitingDeliveryTable parcels={parcelsWaitingDelivery} updateStatus={(id, status) => updateParcelStatus(id, status)} />
+        <ParcelsWaitingPickupTable parcels={parcelsWaitingPickup} updateStatus={(id, status) => updateParcelStatus(id, status)} />
+      </>
+    );
+  }
+  

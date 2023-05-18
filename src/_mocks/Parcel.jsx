@@ -10,6 +10,7 @@ const Parcels = [...Array(10)].map((_, index) => {
         delivery_date: null,
         pickup_date: null,
         status: status,
+        store_name: faker.company.name(),
     };
 
     if (status === 'Pending') {

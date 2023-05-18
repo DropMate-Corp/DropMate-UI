@@ -16,7 +16,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const ITEMS_PER_PAGE = 10; // Number of items to display per page
 
-export default function ParcelsWaitingDeliveryTable({ parcels }) {
+export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -44,12 +44,14 @@ export default function ParcelsWaitingDeliveryTable({ parcels }) {
 
     const handleSubmission = (event) => {
         event.preventDefault();
-        console.log(deliveryID);
 
         // Validate Delivery ID
 
         // Remove parcel from table
-        setData(data.filter((item) => item.id !== parcel.id));
+        setData(data.filter((item) => item.parcel_id !== parcel.parcel_id));
+
+        // Update parcel status
+        updateStatus(parcel.parcel_id, 'Pending');
 
         // Reset form
         setDeliveryID('');
@@ -89,7 +91,7 @@ export default function ParcelsWaitingDeliveryTable({ parcels }) {
                             {currentItems.length > 0 ? (
                                 currentItems.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.id}</td>
+                                        <td>{parcel.parcel_id}</td>
                                         <td>{parcel.weight}</td>
                                         <td>{parcel.store_name}</td>
                                         <td>
@@ -151,7 +153,7 @@ export default function ParcelsWaitingDeliveryTable({ parcels }) {
             {parcel && (
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{parcel.id}</Modal.Title>
+                        <Modal.Title>{parcel.parcel_id}</Modal.Title>
                     </Modal.Header>
                     <Form>
                         <Modal.Body>
