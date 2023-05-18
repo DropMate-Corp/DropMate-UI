@@ -9,6 +9,7 @@ import {
 // Pages
 import App from './App.jsx'
 import ACP from './pages/ACP/index.jsx';
+import ACPOperator from './pages/ACP-Operator/index.jsx';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/acp/:id",
     element: <ACP />,
+  },
+  {
+    path: "/acp-operator",
+    element: <ACPOperator />,
   }
 ]);
 

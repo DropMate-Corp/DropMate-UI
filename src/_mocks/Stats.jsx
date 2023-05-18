@@ -7,7 +7,7 @@ const Stats = {
     parcels_delivered: faker.number.int(),
 };
 
-const ACPStats = [...Array(10)].map((_, index) => ({
+const ACPStats = [...Array(5)].map((_, index) => ({
     id: faker.number.int(),
     name: faker.company.name(),
     parcel_limit: faker.number.int(),
