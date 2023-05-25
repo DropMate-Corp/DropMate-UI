@@ -40,8 +40,12 @@ export default function Login() {
 
         // Redirect to Admin if admin is true
         if (admin) {
+            // set userType 
+            localStorage.setItem('userType', 'admin');
             navigate('/admin');
         } else {
+            // set userType
+            localStorage.setItem('userType', 'acp-operator');
             navigate('/acp-operator');
         }
     }

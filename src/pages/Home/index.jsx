@@ -9,13 +9,12 @@ import Request from './components/Request';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 
 export default function Home() {
     return (
         <>
             <BasicExample />
-            <Container>
+            <Container className="mb-5">
                 <Row className='justify-content-md-center'>
                     <Col md={6} className='mt-5'>
                         <Login />

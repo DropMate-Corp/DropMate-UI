@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -10,6 +10,7 @@ function BasicExample() {
 
   // See if user is logged in
   const loggedIn = localStorage.getItem('loggedIn');
+  const userType = localStorage.getItem('userType');
 
   // Log out
   const handleLogout = () => {
@@ -20,12 +21,18 @@ function BasicExample() {
   return (
     <Navbar bg="light">
       <Container>
-        <Navbar.Brand href="/">DropMate</Navbar.Brand>
+        <Navbar.Brand as={Link} to={userType === 'admin' ? '/admin' : '/acp-operator'}>
+          DropMate
+        </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          {loggedIn && <Navbar.Text>
-            <a href="#login" onClick={handleLogout}>Log Out</a>
-          </Navbar.Text>}
+          {loggedIn && (
+            <Navbar.Text>
+              <Link to="/" onClick={handleLogout}>
+                Log Out
+              </Link>
+            </Navbar.Text>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

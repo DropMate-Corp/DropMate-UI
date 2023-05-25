@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Bootstrap
@@ -24,12 +24,16 @@ const TABLE_HEADERS = [
 ];
 
 export default function ACPTable({ acps }) {
-    const [info, setInfo] = useState(acps);
+    const [info, setInfo] = useState();
+    
+    useEffect(() => {
+        setInfo(acps);
+    }, [acps]);
 
     const navigate = useNavigate();
 
     const handleView = (event, acp) => {
-        navigate(`/acp/${acp.id}`);
+        navigate(`/acp/${acp.acpId}`);
     };
 
     // Modal
@@ -51,7 +55,7 @@ export default function ACPTable({ acps }) {
 
     return (
         <>
-            <Container className="mt-5 mb-5">
+            <Container className="mt-5 mb-5" id="registeredACPs">
                 <Row className="mb-3">
                     <Col>
                         <h2>Registered ACPs</h2>
@@ -73,14 +77,14 @@ export default function ACPTable({ acps }) {
                                         <tr key={index}>
                                             <td>{acp.name}</td>
                                             <td>{acp.email}</td>
-                                            <td>{acp.telephone}</td>
+                                            <td>{acp.telephoneNumber}</td>
                                             <td>{acp.address}</td>
                                             <td>{acp.city}</td>
-                                            <td>{acp.manager}</td>
+                                            <td>{acp.managerContact}</td>
                                             <td>
                                                 <Row>
                                                     <Col md={6}>
-                                                        <Button variant="primary" onClick={(event) => handleView(event, acp)}>
+                                                        <Button variant="primary" onClick={(event) => handleView(event, acp)} id={`viewACP${acp.acpId}`}>
                                                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                                                         </Button>
                                                     </Col>

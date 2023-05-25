@@ -1,6 +1,6 @@
+import React, {useEffect, useState} from 'react';
+
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 // Components
 import ACPTable from './components/ACPTable.jsx';
@@ -16,11 +16,28 @@ import { Partners } from '../../_mocks/Partner.jsx';
 import { Requests } from '../../_mocks/Requests.jsx';
 import { ACPStats } from '../../_mocks/Stats.jsx';
 
+// Services
+import { getAllAcp } from '../../services/adminService.jsx';
+
 export default function Dashboard() {
+    const [acps, setACP] = useState([]);
+    const [parcels, setParcels] = useState([]);
+    const [partners, setPartners] = useState([]);
+    const [requests, setRequests] = useState([]);
+    const [stats, setStats] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const acp = await getAllAcp();
+            setACP(acp);
+        }
+        fetchData();
+    }, []);
+
     return (
         <>
             <Container>
-                <ACPTable acps={ACPs} />
+                <ACPTable acps={acps} />
                 <ACPStatisticsTable stats={ACPStats} />
                 <ACPRequestTable requests={Requests} />
                 <Parcels parcels={data} />

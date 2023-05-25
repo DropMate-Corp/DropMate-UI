@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -12,11 +12,20 @@ import Form from 'react-bootstrap/Form';
 // Components
 import ACPStats from './ACPStats';
 
-// Data
-import { Stats } from '../../../_mocks/Stats.jsx';
-
 export default function ACPDetails({ acp }) {
     const [info, setInfo] = useState(acp);
+    const [stats, setStats] = useState();
+
+    useEffect(() => {
+        setStats(
+            {
+                parcel_limit: info.deliveryLimit,
+                parcels_waiting_for_delivery: info.operationalStatistics["parcels_in_delivery"],
+                parcels_waiting_for_pickup: info.operationalStatistics["parcels_waiting_pickup"],
+                parcels_delivered: info.operationalStatistics["total_parcels"]
+            }
+        )
+    }, [info]);
 
     // Modal
     const [show, setShow] = useState(false);
@@ -26,10 +35,10 @@ export default function ACPDetails({ acp }) {
     // Form
     const [name, setName] = useState(info.name);
     const [email, setEmail] = useState(info.email);
-    const [telephone, setTelephone] = useState(info.telephone);
+    const [telephone, setTelephone] = useState(info.telephoneNumber);
     const [city, setCity] = useState(info.city);
     const [address, setAddress] = useState(info.address);
-    const [manager, setManager] = useState(info.manager);
+    const [manager, setManager] = useState(info.managerContact);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -51,23 +60,23 @@ export default function ACPDetails({ acp }) {
                 <Col md={6}>
                     <Card>
                         <Card.Body>
-                            <Card.Title>{info.name}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{info.email}</Card.Subtitle>
+                            <Card.Title>{name}</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">{email}</Card.Subtitle>
                             <Card.Text>
-                                <strong>Location:</strong> {info.address}, {info.city}
+                                <strong>Location:</strong> {address}, {city}
                             </Card.Text>
                             <Card.Text>
-                                <strong>Telephone:</strong> {info.telephone}
+                                <strong>Telephone:</strong> {telephone}
                             </Card.Text>
                             <Card.Text>
-                                <strong>Manager Contact:</strong> {info.manager}
+                                <strong>Manager Contact:</strong> {manager}
                             </Card.Text>
                             <Button variant="primary" onClick={handleShow}>Edit</Button>
                         </Card.Body>
                     </Card>
                 </Col>
                 <Col md={6}>
-                    <ACPStats stats={Stats}/>
+                    { stats ? (<ACPStats stats={stats}/>) : (<></>)}
                 </Col>
             </Row>
             <Modal show={show} onHide={handleClose}>

@@ -15,7 +15,7 @@ export default function Parcels({ parcels }) {
         if (status === 'All') {
             setData(parcels);
         } else {
-            setData(parcels.filter(parcel => parcel.status === status));
+            setData(parcels.filter(parcel => parcel.parcelStatus === status));
         }
     }, [status, parcels]);
 
@@ -33,8 +33,8 @@ export default function Parcels({ parcels }) {
                     <Form>
                         <Form.Select aria-label="Default select example" onChange={handleStatusChange} value={status}>
                             <option value="All">All</option>
-                            <option value="In Transit">Waiting for Delivery</option>
-                            <option value="Pending">Waiting for Pickup</option>
+                            <option value="IN_DELIVERY">In Delivery</option>
+                            <option value="WAITING_FOR_PICKUP">Waiting for Pickup</option>
                         </Form.Select>
                     </Form>
                 </Col>
@@ -57,13 +57,13 @@ export default function Parcels({ parcels }) {
                             {data ? (
                                 data.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.parcel_id}</td>
-                                        <td>{parcel.delivery_code}</td>
-                                        <td>{parcel.pickup_code}</td>
+                                        <td>{parcel.parcelId}</td>
+                                        <td>{parcel.deliveryCode}</td>
+                                        <td>{parcel.pickupCode}</td>
                                         <td>{parcel.weight}</td>
-                                        <td>{parcel.delivery_date}</td>
-                                        <td>{parcel.pickup_date}</td>
-                                        <td>{parcel.status}</td>
+                                        <td>{parcel.deliveryDate}</td>
+                                        <td>{parcel.pickupDate}</td>
+                                        <td>{parcel.parcelStatus}</td>
                                     </tr>
                                 ))) : (
                                 <tr>

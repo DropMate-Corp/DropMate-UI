@@ -14,13 +14,13 @@ export default function ACPStats({ stats }) {
                 <StatCard title="Parcel Limit" subtitle="Total Parcels" stat={stats.parcel_limit} />
             </Col>
             <Col md={6}>
-                <StatCard title="Parcels Waiting Delivery" subtitle="Total Parcels" stat={stats.parcels_waiting_for_delivery} />
+                <StatCard title="Parcels in Delivery" subtitle="Total Parcels" stat={stats.parcels_waiting_for_delivery} />
             </Col>
             <Col md={6}>
                 <StatCard title="Parcels Waiting Pickup" subtitle="Total Parcels" stat={stats.parcels_waiting_for_pickup} />
             </Col>
             <Col md={6}>
-                <StatCard title="Parcels Delivered" subtitle="Total Parcels" stat={stats.parcels_delivered} />
+                <StatCard title="Total Parcels" subtitle="Total Parcels" stat={stats.parcels_delivered} />
             </Col>
         </Row>
     )
