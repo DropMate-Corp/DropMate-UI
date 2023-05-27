@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 
 export default function Parcels({ parcels }) {
-    const [data, setData] = useState(parcels);
+    const [data, setData] = useState(null);
     const [status, setStatus] = useState('All');
 
     useEffect(() => {
@@ -22,6 +22,38 @@ export default function Parcels({ parcels }) {
     const handleStatusChange = (event) => {
         setStatus(event.target.value);
     };
+
+    if (!data) return (
+        <Container>
+            <Row>
+                <Col>
+                    <h2>Parcels</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Parcel ID</th>
+                                <th>Delivery Code</th>
+                                <th>Pickup Code</th>
+                                <th>Weight</th>
+                                <th>Delivery Date</th>
+                                <th>Pickup Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colSpan="7">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                </Col>
+            </Row>
+        </Container>
+    );
 
     return (
         <Container>
@@ -54,7 +86,7 @@ export default function Parcels({ parcels }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data ? (
+                            {data.length > 0 ? (
                                 data.map((parcel, index) => (
                                     <tr key={index}>
                                         <td>{parcel.parcelId}</td>
@@ -65,12 +97,14 @@ export default function Parcels({ parcels }) {
                                         <td>{parcel.pickupDate}</td>
                                         <td>{parcel.parcelStatus}</td>
                                     </tr>
-                                ))) : (
+                                ))
+                            ) : (
                                 <tr>
                                     <td colSpan="7">No parcels found</td>
                                 </tr>
                             )}
                         </tbody>
+
                     </Table>
                 </Col>
             </Row>

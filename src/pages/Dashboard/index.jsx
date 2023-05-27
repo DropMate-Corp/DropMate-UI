@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Container from 'react-bootstrap/Container';
 
@@ -17,7 +17,14 @@ import { Requests } from '../../_mocks/Requests.jsx';
 import { ACPStats } from '../../_mocks/Stats.jsx';
 
 // Services
-import { getAllAcp, getAllACPStatistics, deleteAcp } from '../../services/adminService.jsx';
+import {
+    getAllAcp,
+    getAllACPStatistics,
+    deleteAcp,
+    getAllParcelsInDelivery,
+    getAllParcelsWaitingPickup,
+    getAllEstores
+} from '../../services/adminService.jsx';
 
 export default function Dashboard() {
     const [acps, setACP] = useState([]);
@@ -28,13 +35,31 @@ export default function Dashboard() {
 
     useEffect(() => {
         async function fetchData() {
-            const acp = await getAllAcp();
-            const stats = await getAllACPStatistics();
-            setACP(acp);
-            setStats(stats);
+          const acp = await getAllAcp();
+          const stats = await getAllACPStatistics();
+          const getParcelsWaitingPickup = await getAllParcelsWaitingPickup();
+          const getParcelsInDelivery = await getAllParcelsInDelivery();
+          
+          const parcels = getParcelsWaitingPickup.concat(getParcelsInDelivery);
+          const partners = await getAllEstores();
+          
+          setACP(acp);
+          setStats(
+            stats.map(stat => {
+              const matchingAcp = acp.find(acp => acp.acpId == stat.acpId);
+              if (matchingAcp) {
+                stat.acpName = matchingAcp.name;
+              }
+              return stat;
+            })
+          );
+          setParcels(parcels);
+          setPartners(partners);
         }
+      
         fetchData();
-    }, []);
+      
+      }, []);      
 
     const deleteACP = async (id) => {
         await deleteAcp(id);
@@ -44,11 +69,11 @@ export default function Dashboard() {
     return (
         <>
             <Container>
-                <ACPTable acps={acps} deleteACP={(id) => deleteACP(id)}/>
-                <ACPStatisticsTable stats={ACPStats} />
+                <ACPTable acps={acps} deleteACP={(id) => deleteACP(id)} />
+                <ACPStatisticsTable stats={stats} />
                 <ACPRequestTable requests={Requests} />
-                <Parcels parcels={data} />
-                <PartnerTable partners={Partners} />
+                <Parcels parcels={parcels} />
+                <PartnerTable partners={partners} />
             </Container>
         </>
     )

@@ -6,7 +6,7 @@ export default function StatCard({ title, stat }) {
         <Card>
             <Card.Body>
                 <Card.Title>{title}</Card.Title>    
-                <Card.Text>
+                <Card.Text id={title}>
                     {stat}
                 </Card.Text>
             </Card.Body>

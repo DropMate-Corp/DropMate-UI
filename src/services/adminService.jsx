@@ -21,8 +21,15 @@ const deleteAcp = async (id) => {
 
 const getAllACPStatistics = async () => {
     const response = await axios.get(adminUri + "/acp/statistics");
-    console.log(response.data);
-    return response.data;
+    const data = response.data;
+    let stats = [];
+    Object.keys(data).forEach(key => {
+        stats.push({
+            acpId: key,
+            parcels: data[key]
+        });
+    });
+    return stats;
 };
 
 // PARCEL RELATED METHODS
@@ -37,7 +44,22 @@ const getParcelsWaitingPickup = async (id) => {
     return response.data;
 };
 
+const getAllParcelsInDelivery = async () => {
+    const response = await axios.get(adminUri + "/parcels/all/delivery");
+    return response.data;
+};
 
+const getAllParcelsWaitingPickup = async () => {
+    const response = await axios.get(adminUri + "/parcels/all/pickup");
+    return response.data;
+};
+
+// Estores
+
+const getAllEstores = async () => {
+    const response = await axios.get(adminUri + "/estores");
+    return response.data;
+};
 
 export { 
     getAllAcp, 
@@ -46,4 +68,7 @@ export {
     getParcelsWaitingPickup, 
     getAllACPStatistics,
     deleteAcp,
+    getAllParcelsInDelivery,
+    getAllParcelsWaitingPickup,
+    getAllEstores
 };

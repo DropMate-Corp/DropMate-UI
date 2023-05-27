@@ -71,7 +71,7 @@ export default function ACPTable({ acps, deleteACP }) {
 
   return (
     <>
-      <Container className="mt-5 mb-5" id="registeredACPs">
+      <Container className="mt-5 mb-5">
         <Row className="mb-3">
           <Col>
             <h2>Registered ACPs</h2>
@@ -79,7 +79,7 @@ export default function ACPTable({ acps, deleteACP }) {
         </Row>
         <Row>
           <Col>
-            <Table striped bordered hover>
+            <Table striped bordered hover id="registeredACPsTable">
               <thead>
                 <tr>
                   {TABLE_HEADERS.map((header, index) => (
