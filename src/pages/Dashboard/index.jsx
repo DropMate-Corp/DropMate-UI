@@ -17,7 +17,7 @@ import { Requests } from '../../_mocks/Requests.jsx';
 import { ACPStats } from '../../_mocks/Stats.jsx';
 
 // Services
-import { getAllAcp } from '../../services/adminService.jsx';
+import { getAllAcp, getAllACPStatistics, deleteAcp } from '../../services/adminService.jsx';
 
 export default function Dashboard() {
     const [acps, setACP] = useState([]);
@@ -29,15 +29,22 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchData() {
             const acp = await getAllAcp();
+            const stats = await getAllACPStatistics();
             setACP(acp);
+            setStats(stats);
         }
         fetchData();
     }, []);
 
+    const deleteACP = async (id) => {
+        await deleteAcp(id);
+        setACP(acps.filter(acp => acp.acpId !== id));
+    };
+
     return (
         <>
             <Container>
-                <ACPTable acps={acps} />
+                <ACPTable acps={acps} deleteACP={(id) => deleteACP(id)}/>
                 <ACPStatisticsTable stats={ACPStats} />
                 <ACPRequestTable requests={Requests} />
                 <Parcels parcels={data} />

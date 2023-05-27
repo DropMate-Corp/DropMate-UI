@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -15,7 +15,41 @@ const TABLE_HEADERS = [
 ];
 
 export default function ACPStatisticsTable({ stats }) {
-    const [info, setInfo] = useState(stats);
+    const [info, setInfo] = useState();
+
+    useEffect(() => {
+        setInfo(stats);
+    }, [stats]);
+
+    if (!stats) return (
+        <>
+            <Container className="mt-5 mb-5">
+                <Row className="mb-3">
+                    <Col>
+                        <h2>ACPs Statistics</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    {TABLE_HEADERS.map((header, index) => (
+                                        <th key={index}>{header}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colSpan={TABLE_HEADERS.length}>Loading...</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
 
     return (
         <>
