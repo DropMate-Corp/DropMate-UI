@@ -73,17 +73,16 @@ export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
         <Container>
             <Row>
                 <Col>
-                    <h2>Parcels Waiting for Delivery</h2>
+                    <h2>Parcels in Delivery</h2>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <Table striped bordered hover>
+                    <Table striped bordered hover id="inDeliveryTable">
                         <thead>
                             <tr>
                                 <th>Parcel ID</th>
                                 <th>Weight</th>
-                                <th>Store Name</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -91,9 +90,8 @@ export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
                             {currentItems.length > 0 ? (
                                 currentItems.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.parcel_id}</td>
+                                        <td>{parcel.parcelId}</td>
                                         <td>{parcel.weight}</td>
-                                        <td>{parcel.store_name}</td>
                                         <td>
                                             <Button
                                                 variant="primary"
