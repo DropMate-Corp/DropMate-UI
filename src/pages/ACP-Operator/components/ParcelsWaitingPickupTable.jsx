@@ -45,13 +45,8 @@ export default function ParcelsWaitingPickupTable({ parcels, updateStatus }) {
     const handleSubmission = (event) => {
         event.preventDefault();
 
-        // Validate Pickup ID
-
-        // Remove parcel from table
-        setData(data.filter((item) => item.parcel_id !== parcel.parcel_id));
-
         // Update parcel status
-        updateStatus(parcel.parcel_id, 'Delivered');
+        updateStatus(parcel.parcelId, pickupID, 'WAITING_FOR_PICKUP');
 
         // Reset form
         setPickupID('');
@@ -78,12 +73,12 @@ export default function ParcelsWaitingPickupTable({ parcels, updateStatus }) {
             </Row>
             <Row>
                 <Col>
-                    <Table striped bordered hover>
+                    <Table striped bordered hover id="waitingPickupTable">
                         <thead>
                             <tr>
                                 <th>Parcel ID</th>
                                 <th>Weight</th>
-                                <th>Store Name</th>
+                                <th>Delivery Code</th>
                                 <th>Delivery Date</th>
                                 <th></th>
                             </tr>
@@ -92,10 +87,10 @@ export default function ParcelsWaitingPickupTable({ parcels, updateStatus }) {
                             {currentItems.length > 0 ? (
                                 currentItems.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.parcel_id}</td>
+                                        <td>{parcel.parcelId}</td>
                                         <td>{parcel.weight}</td>
-                                        <td>{parcel.store_name}</td>
-                                        <td>{parcel.delivery_date}</td>
+                                        <td>{parcel.deliveryCode}</td>
+                                        <td>{parcel.deliveryDate}</td>
                                         <td>
                                             <Button
                                                 variant="primary"
@@ -155,7 +150,7 @@ export default function ParcelsWaitingPickupTable({ parcels, updateStatus }) {
             {parcel && (
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{parcel.parcel_id}</Modal.Title>
+                        <Modal.Title>Parcel {parcel.parcelId}</Modal.Title>
                     </Modal.Header>
                     <Form>
                         <Modal.Body>

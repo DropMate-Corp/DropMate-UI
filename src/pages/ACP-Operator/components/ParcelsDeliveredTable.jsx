@@ -36,18 +36,19 @@ export default function ParcelsDelivered({ parcels }) {
         <Container>
             <Row>
                 <Col>
-                    <h2>Parcels Waiting for Delivery</h2>
+                    <h2>Parcels Delivered</h2>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <Table striped bordered hover>
+                    <Table striped bordered hover id="deliveredTable">
                         <thead>
                             <tr>
                                 <th>Parcel ID</th>
                                 <th>Weight</th>
-                                <th>Store Name</th>
+                                <th>Delivery Code</th>
                                 <th>Delivery Date</th>
+                                <th>Pickup Code</th>
                                 <th>Pickup Date</th>
                             </tr>
                         </thead>
@@ -55,11 +56,12 @@ export default function ParcelsDelivered({ parcels }) {
                             {currentItems.length > 0 ? (
                                 currentItems.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.parcel_id}</td>
+                                        <td>{parcel.parcelId}</td>
                                         <td>{parcel.weight}</td>
-                                        <td>{parcel.store_name}</td>
-                                        <td>{parcel.delivery_date}</td>
-                                        <td>{parcel.pickup_date}</td>
+                                        <td>{parcel.deliveryCode}</td>
+                                        <td>{parcel.deliveryDate}</td>
+                                        <td>{parcel.pickupCode}</td>
+                                        <td>{parcel.pickupDate}</td>
                                     </tr>
                                 ))
                             ) : (

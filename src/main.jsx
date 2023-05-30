@@ -15,6 +15,10 @@ import Home from './pages/Home/index.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/admin",
     element: <App />,
   },
   {
@@ -25,10 +29,6 @@ const router = createBrowserRouter([
     path: "/acp-operator",
     element: <ACPOperator />,
   },
-  {
-    path: "/home",
-    element: <Home />,
-  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

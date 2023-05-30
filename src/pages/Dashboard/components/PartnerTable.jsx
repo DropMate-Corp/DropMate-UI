@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -20,6 +20,10 @@ const TABLE_HEADERS = [
 export default function PartnerTable({ partners }) {
     const [info, setInfo] = useState(partners);
 
+    useEffect(() => {
+        setInfo(partners);
+    }, [partners]);
+
     return (
         <>
             <Container className="mt-5 mb-5">
@@ -30,7 +34,7 @@ export default function PartnerTable({ partners }) {
                 </Row>
                 <Row>
                     <Col>
-                        <Table striped bordered hover>
+                        <Table striped bordered hover id="registeredPartnersTable">
                             <thead>
                                 <tr>
                                     {TABLE_HEADERS.map((header, index) => (
@@ -44,12 +48,12 @@ export default function PartnerTable({ partners }) {
                                         <tr key={index}>
                                             <td>{partner.name}</td>
                                             <td>{partner.email}</td>
-                                            <td>{partner.telephone}</td>
+                                            <td>{partner.telephoneNumber}</td>
                                             <td>{partner.address}</td>
                                             <td>{partner.city}</td>
                                             <td>{partner.field}</td>
-                                            <td>{partner.manager}</td>
-                                            <td>{partner.orders_delivered}</td>
+                                            <td>{partner.managerContact}</td>
+                                            <td>{partner.ordersDelivered}</td>
                                         </tr>
                                     ))
                                 ) : (

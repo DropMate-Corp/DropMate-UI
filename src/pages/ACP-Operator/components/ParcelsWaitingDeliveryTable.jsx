@@ -45,13 +45,8 @@ export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
     const handleSubmission = (event) => {
         event.preventDefault();
 
-        // Validate Delivery ID
-
-        // Remove parcel from table
-        setData(data.filter((item) => item.parcel_id !== parcel.parcel_id));
-
         // Update parcel status
-        updateStatus(parcel.parcel_id, 'Pending');
+        updateStatus(parcel.parcelId, deliveryID, 'IN_DELIVERY');
 
         // Reset form
         setDeliveryID('');
@@ -73,17 +68,16 @@ export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
         <Container>
             <Row>
                 <Col>
-                    <h2>Parcels Waiting for Delivery</h2>
+                    <h2>Parcels in Delivery</h2>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <Table striped bordered hover>
+                    <Table striped bordered hover id="inDeliveryTable">
                         <thead>
                             <tr>
                                 <th>Parcel ID</th>
                                 <th>Weight</th>
-                                <th>Store Name</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -91,9 +85,8 @@ export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
                             {currentItems.length > 0 ? (
                                 currentItems.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.parcel_id}</td>
+                                        <td>{parcel.parcelId}</td>
                                         <td>{parcel.weight}</td>
-                                        <td>{parcel.store_name}</td>
                                         <td>
                                             <Button
                                                 variant="primary"
@@ -153,7 +146,7 @@ export default function ParcelsWaitingDeliveryTable({ parcels, updateStatus }) {
             {parcel && (
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{parcel.parcel_id}</Modal.Title>
+                        <Modal.Title>Parcel {parcel.parcelId}</Modal.Title>
                     </Modal.Header>
                     <Form>
                         <Modal.Body>

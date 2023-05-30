@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -18,14 +18,17 @@ const TABLE_HEADERS = [
   'Email',
   'Phone',
   'Address',
-  'City',
-  'Manager Contact',
+  'City', 
   'Status',
   '',
 ];
 
-export default function ACPRequestTable({ requests }) {
-  const [info, setInfo] = useState(requests);
+export default function ACPRequestTable({ requests, changeAcpStatus }) {
+  const [info, setInfo] = useState();
+
+  useEffect(() => {
+    setInfo(requests);
+  }, [requests]);
 
   // Modal
   const [acpRequest, setAcpRequest] = useState(null);
@@ -45,18 +48,39 @@ export default function ACPRequestTable({ requests }) {
   };
 
   const handleSave = () => {
-    // TODO: Handle saving the updated status
-    console.log(acpRequest);
-    setInfo(
-        info.map((acp) => {
-            if (acp.id === acpRequest.id) {
-                return acpRequest;
-            }
-            return acp;
-        })
-    );
+    changeAcpStatus(acpRequest.acpId, acpRequest.status);
     handleClose();
   };
+
+  const getStatusText = (status) => {
+    switch (status.toString()) {
+      case "0":
+        return 'Pending';
+      case "1":
+        return 'Rejected';
+      case "2":
+        return 'Approved';
+      default:
+        return 'Unknown';
+    }
+  };
+
+  if (!info) {
+    return (
+      <Container className="mt-5 mb-5">
+        <Row className="mb-3">
+          <Col>
+            <h2>ACPs Requests</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <p>Loading...</p>
+          </Col>
+        </Row>
+      </Container>
+    )
+  }
 
   return (
     <>
@@ -68,7 +92,7 @@ export default function ACPRequestTable({ requests }) {
         </Row>
         <Row>
           <Col>
-            <Table striped bordered hover>
+            <Table striped bordered hover id="acpReviewTable">
               <thead>
                 <tr>
                   {TABLE_HEADERS.map((header, index) => (
@@ -77,27 +101,27 @@ export default function ACPRequestTable({ requests }) {
                 </tr>
               </thead>
               <tbody>
-                {info ? (
+                {info.length >= 1 ? (
                   info.map((acp, index) => (
-                    <tr key={index}>
+                    <tr key={index} id={`acpReviewRow-${acp.acpId}`}>
                       <td>{acp.name}</td>
                       <td>{acp.email}</td>
-                      <td>{acp.telephone}</td>
+                      <td>{acp.telephoneNumber}</td>
                       <td>{acp.address}</td>
                       <td>{acp.city}</td>
-                      <td>{acp.manager}</td>
-                      <td>{acp.status}</td>
+                      <td>{getStatusText(acp.status)}</td>
                       <td>
-                        <Row>
+                        {acp.status === 0 && <Row>
                           <Col md={6}>
                             <Button
                               variant="primary"
                               onClick={(event) => handleShow(event, acp)}
+                              id={`acpReviewButton-${acp.acpId}`}
                             >
                               <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </Button>
                           </Col>
-                        </Row>
+                        </Row>}
                       </td>
                     </tr>
                   ))
@@ -112,18 +136,18 @@ export default function ACPRequestTable({ requests }) {
         </Row>
       </Container>
       {acpRequest && (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} id="acpReviewModal">
           <Modal.Header closeButton>
             <Modal.Title>{acpRequest.name}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{acpRequest.motive}</Modal.Body>
+          <Modal.Body>{acpRequest.description}</Modal.Body>
           <Modal.Footer>
-            <Form.Select onChange={handleStatusChange} value={acpRequest.status}>
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
+            <Form.Select onChange={handleStatusChange} value={acpRequest.status} name={`acpStatus-${acpRequest.acpId}`}>
+              <option value={0}>Pending</option>
+              <option value={2}>Approved</option>
+              <option value={1}>Rejected</option>
             </Form.Select>
-            <Button variant="primary" onClick={handleSave}>
+            <Button variant="primary" onClick={handleSave} id="submitACPReview">
               Save
             </Button>
           </Modal.Footer>

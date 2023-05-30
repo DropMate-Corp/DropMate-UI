@@ -8,20 +8,52 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 
 export default function Parcels({ parcels }) {
-    const [data, setData] = useState(parcels);
+    const [data, setData] = useState(null);
     const [status, setStatus] = useState('All');
 
     useEffect(() => {
         if (status === 'All') {
             setData(parcels);
         } else {
-            setData(parcels.filter(parcel => parcel.status === status));
+            setData(parcels.filter(parcel => parcel.parcelStatus === status));
         }
     }, [status, parcels]);
 
     const handleStatusChange = (event) => {
         setStatus(event.target.value);
     };
+
+    if (!data) return (
+        <Container>
+            <Row>
+                <Col>
+                    <h2>Parcels</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Parcel ID</th>
+                                <th>Delivery Code</th>
+                                <th>Pickup Code</th>
+                                <th>Weight</th>
+                                <th>Delivery Date</th>
+                                <th>Pickup Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colSpan="7">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                </Col>
+            </Row>
+        </Container>
+    );
 
     return (
         <Container>
@@ -33,8 +65,8 @@ export default function Parcels({ parcels }) {
                     <Form>
                         <Form.Select aria-label="Default select example" onChange={handleStatusChange} value={status}>
                             <option value="All">All</option>
-                            <option value="In Transit">Waiting for Delivery</option>
-                            <option value="Pending">Waiting for Pickup</option>
+                            <option value="IN_DELIVERY">In Delivery</option>
+                            <option value="WAITING_FOR_PICKUP">Waiting for Pickup</option>
                         </Form.Select>
                     </Form>
                 </Col>
@@ -54,23 +86,25 @@ export default function Parcels({ parcels }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data ? (
+                            {data.length > 0 ? (
                                 data.map((parcel, index) => (
                                     <tr key={index}>
-                                        <td>{parcel.parcel_id}</td>
-                                        <td>{parcel.delivery_code}</td>
-                                        <td>{parcel.pickup_code}</td>
+                                        <td>{parcel.parcelId}</td>
+                                        <td>{parcel.deliveryCode}</td>
+                                        <td>{parcel.pickupCode}</td>
                                         <td>{parcel.weight}</td>
-                                        <td>{parcel.delivery_date}</td>
-                                        <td>{parcel.pickup_date}</td>
-                                        <td>{parcel.status}</td>
+                                        <td>{parcel.deliveryDate}</td>
+                                        <td>{parcel.pickupDate}</td>
+                                        <td>{parcel.parcelStatus}</td>
                                     </tr>
-                                ))) : (
+                                ))
+                            ) : (
                                 <tr>
                                     <td colSpan="7">No parcels found</td>
                                 </tr>
                             )}
                         </tbody>
+
                     </Table>
                 </Col>
             </Row>
