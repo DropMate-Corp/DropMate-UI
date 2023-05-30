@@ -9,5 +9,4 @@ dotenv.config(); // Load environment variables from .env
 export default defineConfig({
   plugins: [react()],
   base: '/DropMate-UI/',
-  plugins: [react()],
 })
