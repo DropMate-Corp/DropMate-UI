@@ -32,6 +32,16 @@ const getAllACPStatistics = async () => {
     return stats;
 };
 
+const getAllAcpRequests = async () => {
+    const response = await axios.get(adminUri + "/acp/pending");
+    return response.data;
+};
+
+const changeAcpRequestStatus = async (id, status) => {
+    const response = await axios.put(adminUri + "/acp/pending/" + id + "/status" + "?newStatus=" + status);
+    return response.data;
+};
+
 // PARCEL RELATED METHODS
 
 const getParcelsInDelivery = async (id) => {
@@ -70,5 +80,7 @@ export {
     deleteAcp,
     getAllParcelsInDelivery,
     getAllParcelsWaitingPickup,
-    getAllEstores
+    getAllEstores,
+    getAllAcpRequests,
+    changeAcpRequestStatus
 };

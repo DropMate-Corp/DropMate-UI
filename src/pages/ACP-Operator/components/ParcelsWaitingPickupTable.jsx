@@ -45,13 +45,8 @@ export default function ParcelsWaitingPickupTable({ parcels, updateStatus }) {
     const handleSubmission = (event) => {
         event.preventDefault();
 
-        // Validate Pickup ID
-
-        // Remove parcel from table
-        setData(data.filter((item) => item.parcel_id !== parcel.parcel_id));
-
         // Update parcel status
-        updateStatus(parcel.parcel_id, 'Delivered');
+        updateStatus(parcel.parcelId, pickupID, 'WAITING_FOR_PICKUP');
 
         // Reset form
         setPickupID('');
@@ -155,7 +150,7 @@ export default function ParcelsWaitingPickupTable({ parcels, updateStatus }) {
             {parcel && (
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{parcel.parcel_id}</Modal.Title>
+                        <Modal.Title>Parcel {parcel.parcelId}</Modal.Title>
                     </Modal.Header>
                     <Form>
                         <Modal.Body>

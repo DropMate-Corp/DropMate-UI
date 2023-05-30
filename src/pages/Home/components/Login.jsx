@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Bootstrap
 import Button from 'react-bootstrap/Button';
@@ -7,76 +6,82 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 
 
-export default function Login() {
-    const navigate = useNavigate();
+export default function Login({ handleLogin }) {
+  // Form
+  const [validated, setValidated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [admin, setAdmin] = useState(false);
 
-    // Form
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [admin, setAdmin] = useState(false);
+  // Form Handlers
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  }
 
-    // Form Handlers
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    }
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    }
-    const handleAdminChange = (e) => {
-        setAdmin(e.target.checked);
-    }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  }
 
-    // Form Submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Email: ', email);
-        console.log('Password: ', password);
-        console.log('Admin: ', admin);
+  const handleAdminChange = (e) => {
+    setAdmin(e.target.checked);
+  }
 
-        // TODO: Add authentication
+  // Form Submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
 
-        // Set Log in Local Storage
-        localStorage.setItem('loggedIn', true);
-
-        // Redirect to Admin if admin is true
-        if (admin) {
-            // set userType 
-            localStorage.setItem('userType', 'admin');
-            navigate('/admin');
-        } else {
-            // set userType
-            localStorage.setItem('userType', 'acp-operator');
-            navigate('/acp-operator');
-        }
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      handleLogin(email, password, admin);
     }
 
-    return (
-        <>
-            <h1>Login</h1>
-            <Card>
-                <Card.Body>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" onChange={handleEmailChange} />
-                            <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                            </Form.Text>
-                        </Form.Group>
+    setValidated(true);
+  }
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" onChange={handlePasswordChange} />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Admin" onChange={handleAdminChange} />
-                        </Form.Group>
-                        <Button variant="primary" onClick={handleSubmit}>
-                            Submit
-                        </Button>
-                    </Form>
-                </Card.Body>
-            </Card>
-        </>
-    );
+  return (
+    <>
+      <h1>Login</h1>
+      <Card>
+        <Card.Body>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                onChange={handleEmailChange}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid email.
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={handlePasswordChange}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid password.
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check type="checkbox" label="Admin" onChange={handleAdminChange} />
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+    </>
+  );
 }

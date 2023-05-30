@@ -9,13 +9,6 @@ import PartnerTable from './components/PartnerTable.jsx';
 import ACPRequestTable from './components/ACPRequestTable.jsx';
 import ACPStatisticsTable from './components/ACPStatisticsTable.jsx';
 
-// Data
-import { ACPs } from '../../_mocks/ACP.jsx';
-import { Parcels as data } from '../../_mocks/Parcel.jsx';
-import { Partners } from '../../_mocks/Partner.jsx';
-import { Requests } from '../../_mocks/Requests.jsx';
-import { ACPStats } from '../../_mocks/Stats.jsx';
-
 // Services
 import {
     getAllAcp,
@@ -23,7 +16,9 @@ import {
     deleteAcp,
     getAllParcelsInDelivery,
     getAllParcelsWaitingPickup,
-    getAllEstores
+    getAllEstores,
+    getAllAcpRequests,
+    changeAcpRequestStatus
 } from '../../services/adminService.jsx';
 
 export default function Dashboard() {
@@ -39,6 +34,7 @@ export default function Dashboard() {
           const stats = await getAllACPStatistics();
           const getParcelsWaitingPickup = await getAllParcelsWaitingPickup();
           const getParcelsInDelivery = await getAllParcelsInDelivery();
+          const requests = await getAllAcpRequests();
           
           const parcels = getParcelsWaitingPickup.concat(getParcelsInDelivery);
           const partners = await getAllEstores();
@@ -55,6 +51,7 @@ export default function Dashboard() {
           );
           setParcels(parcels);
           setPartners(partners);
+          setRequests(requests);
         }
       
         fetchData();
@@ -66,12 +63,24 @@ export default function Dashboard() {
         setACP(acps.filter(acp => acp.acpId !== id));
     };
 
+    const changeAcpStatus = async (id, status) => {
+        await changeAcpRequestStatus(id, status);
+
+        // Change status of request
+        setRequests(requests.map(request => {
+            if (request.acpId == id) {
+                request.status = status;
+            }
+            return request;
+        }));
+    };
+
     return (
         <>
             <Container>
                 <ACPTable acps={acps} deleteACP={(id) => deleteACP(id)} />
                 <ACPStatisticsTable stats={stats} />
-                <ACPRequestTable requests={Requests} />
+                <ACPRequestTable requests={requests} changeAcpStatus={(id, status) => changeAcpStatus(id, status)}/>
                 <Parcels parcels={parcels} />
                 <PartnerTable partners={partners} />
             </Container>

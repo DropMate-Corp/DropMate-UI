@@ -27,10 +27,33 @@ const updateACPLimit = async (acpId, limit) => {
     return response.data;
 }
 
+const updateParcelStatus = async (parcelID, code, status) => {
+    let response;
+    if (status === 'IN_DELIVERY') {
+        response = await axios.put(`${adminUri}/parcel/${parcelID}/checkin?deliveryCode=${code}`)
+        .catch((err) => {
+            return err.response;
+        })
+        .then((res) => {
+            return res;
+        });
+    } else if (status === 'WAITING_FOR_PICKUP') {
+        response = await axios.put(`${adminUri}/parcel/${parcelID}/checkout?pickupCode=${code}`)
+        .catch((err) => {
+            return err.response;
+        })
+        .then((res) => {
+            return res;
+        });
+    }
+    return response;
+}
+
 export { 
     getAllParcelsInDelivery, 
     getAllParcelsWaitingPickup, 
     getAllParcelsDelivered,
     getACPLimit, 
     updateACPLimit,
+    updateParcelStatus,
 };
