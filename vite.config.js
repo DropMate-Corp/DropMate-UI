@@ -8,4 +8,6 @@ dotenv.config(); // Load environment variables from .env
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/DropMate-UI/',
+  plugins: [react()],
 })
