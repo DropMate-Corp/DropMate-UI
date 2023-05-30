@@ -29,7 +29,9 @@ const router = createBrowserRouter([
     path: "/acp-operator",
     element: <ACPOperator />,
   },
-]);
+],
+{ basename: import.meta.env.DEV ? '/' : '/DropMate-UI/' }
+);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
