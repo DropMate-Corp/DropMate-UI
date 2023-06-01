@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     element: <ACPOperator />,
   },
 ],
-{ basename: import.meta.env.DEV ? '/' : '/DropMate-UI/' }
+{ basename: '/DropMate-UI/' }
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
