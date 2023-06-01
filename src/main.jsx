@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   createBrowserRouter,
-  createHashRouter,
   RouterProvider,
 } from "react-router-dom";
 
@@ -13,7 +12,7 @@ import ACP from './pages/ACP/index.jsx';
 import ACPOperator from './pages/ACP-Operator/index.jsx';
 import Home from './pages/Home/index.jsx';
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
