@@ -29,6 +29,10 @@ const router = createBrowserRouter([
     path: "/acp-operator",
     element: <ACPOperator />,
   },
+  {
+    path: "*",
+    element: <Home />,
+  }
 ],
 { basename: '/DropMate-UI/' }
 );
